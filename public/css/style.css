@@ -1,0 +1,161 @@
+body{
+
+   display: flex;
+   flex-direction: column;
+   min-height: 100vh;
+}
+
+.container { 
+    flex: 1  !important;
+}
+
+/* Navbar */
+
+.navbar {
+    height: 6rem;
+    background-color: rgb(255, 255, 255);
+   
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+}
+
+.fa-compass {
+    color: #fe424d;
+    font-size: 3rem;
+}
+
+.nav-link {
+    color: #222222 !important;
+    font-weight: 500 !important;
+}
+
+/* Footer */
+
+footer{
+    background-color: #d6d6d6;
+    padding: 2rem 0;
+    
+}
+
+/* Main footer container */
+
+.f-info{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Social icons */
+
+.f-info-socials i{
+    font-size: 1.5rem;
+    margin: 0 10px;
+    color: #222222;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+
+.f-info-socials i:hover{
+    color: #fe424d;
+    transform: scale(1.2);
+}
+
+/* Footer text */
+
+/* 🔥 REMOVE DEFAULT BODY SPACE (VERY IMPORTANT) */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* 🔥 FULL WIDTH FOOTER FIX */
+footer {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);   /* fixes left gap */
+  background-color: #a29f9f;
+}
+
+/* Footer container */
+.f-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* Footer text */
+.f-info div {
+  font-size: 0.95rem;
+  color: #474646;
+}
+
+/* Footer links */
+.f-info-links a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+}
+
+/* Social icons */
+.f-info-socials i {
+  margin: 0 10px;
+  font-size: 20px;
+}
+
+/* Hover effect */
+
+.f-info-links a:hover{
+    text-decoration: underline;
+    color: #fe424d;
+}
+
+
+/* cards */
+
+.listing-card{
+    border: none !important;
+    margin-bottom: 2rem;
+}
+.card-img-top {
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+
+.card-body{
+    padding: 0 !important;
+}
+
+.card-text{
+    font-weight: 500;
+}
+.overlay-hover{
+    transition: 0.3s;
+}
+
+.overlay-hover:hover{
+    background-color: rgb(187, 238, 255);
+    opacity: 0.2;
+}
+
+.card{
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.card-title{
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+.listing-img{
+    height: 350px;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+

@@ -1,0 +1,57 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="container mt-5">
+
+  <h1 class="mb-4 text-center">CREATE NEW LISTING</h1>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+
+      <div class="card shadow-sm p-6">
+
+        <form method="POST" action="/listings" class="needs-validation" novalidate enctype="multipart/form-data">
+
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input name="listing[title]" placeholder="Enter title" type="text" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="listing[description]" class="form-control" rows="3" required></textarea>
+          </div>
+
+
+          <div class="mb-3">
+            <label for="image" class="form-label">Upload Image</label>
+           <input name="listing[image]" placeholder="enter image URL/Link" type="file" class="form-control" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input name="listing[price]" placeholder="Enter price" type="number" class="form-control" required  >
+          </div>
+
+          <div class="mb-3">
+            <label for="country" class="form-label">Country</label>
+            <input name="listing[country]" placeholder="Enter country" type="text" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input name="listing[location]" placeholder="Enter location" type="text" class="form-control" required>
+          </div>
+
+          <div class="d-grid mt-3">
+            <button class="btn btn-dark">Add Listing</button>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
