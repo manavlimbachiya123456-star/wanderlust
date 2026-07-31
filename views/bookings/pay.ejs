@@ -1,0 +1,48 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="container mt-5 text-center">
+  <h3>Complete Your Payment</h3>
+  <p>Total: ₹<%= booking.totalPrice.toLocaleString("en-IN") %></p>
+
+  <button id="payBtn" class="btn btn-danger px-4 py-2">Pay Now</button>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  document.getElementById("payBtn").addEventListener("click", async () => {
+    // Step 1: create order
+    const res = await fetch("/bookings/<%= booking._id %>/create-order", {
+      method: "POST",
+    });
+    const data = await res.json();
+
+    // Step 2: open Razorpay checkout
+    const options = {
+      key: data.keyId,
+      amount: data.amount,
+      currency: data.currency,
+      order_id: data.orderId,
+      name: "Wanderlust Stays",
+      description: "Booking Payment",
+      handler: async function (response) {
+        // Step 3: verify payment on server
+        const verifyRes = await fetch("/bookings/<%= booking._id %>/verify-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(response),
+        });
+        const verifyData = await verifyRes.json();
+
+        if (verifyData.success) {
+          window.location.href = "/my-bookings";
+        } else {
+          alert("Payment verification failed. Please contact support.");
+        }
+      },
+      theme: { color: "#dc3545" },
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  });
+</script>

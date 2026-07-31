@@ -51,12 +51,17 @@ router.post("/listings/:id/book", async (req, res) => {
 
     await newBooking.save();
     req.flash("success", "Booking confirmed!");
-    res.redirect(`/listings/${id}`);
+    res.redirect(`/bookings/${newBooking._id}/pay`);
   } catch (err) {
     console.error(err);
     req.flash("error", "Something went wrong");
     res.redirect("/listings");
   }
+});
+
+router.get("/bookings/:id/pay", async (req, res) => {
+  const booking = await Booking.findById(req.params.id).populate("listing");
+  res.render("bookings/pay.ejs", { booking });
 });
 
 // MY BOOKINGS

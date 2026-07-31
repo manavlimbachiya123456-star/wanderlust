@@ -17,7 +17,7 @@ const MongoStore = require("connect-mongo").default;
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-
+const paymentrouter = require("./routes/payment.js");
 
 const User = require("./models/user.js");
 const Listing = require("./models/listing.js");
@@ -37,7 +37,9 @@ app.set("view engine", "ejs");
 app.engine("ejs", ejsMate);
 
 //  MIDDLEWARE 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -108,6 +110,7 @@ app.get("/", (req, res) => {
 app.use("/listings", listingsrouter);
 app.use("/", userrouter);
 app.use("/", bookingrouter);
+app.use("/", paymentrouter);
 
 // REVIEW ROUTES 
 app.post("/listings/:id/reviews", async (req, res, next) => {
