@@ -1,2 +1,7 @@
 .env
 node_modules/
+node_modules
+.env
+pythonpart/.env
+pythonpart/venv
+pythonpart/__pycache__

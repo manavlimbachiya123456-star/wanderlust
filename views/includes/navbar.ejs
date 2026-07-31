@@ -9,9 +9,18 @@
         
         <a class="nav-link" href="/listings">Explore</a>
         <a class="nav-link" href="/listings/new">Add new Listings</a>
+         <% if(curruser){ %>
+        <a class="nav-link" href="/my-bookings">My Bookings</a>
+     
+    <%   }%>
       
         
       </div>
+
+      <form class="d-flex mx-auto" action="/listings/search" method="GET">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search destinations" value="<%= typeof q !== 'undefined' ? q : '' %>">
+        <button class="btn btn-outline-dark" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
 
       <div class="navbar-nav ms-auto">
 
@@ -21,6 +30,7 @@
        <% } %>
 
        <% if(curruser){ %>
+      
         <a class="nav-link" href="/logout">LogOut</a>
     <%   }%>
         

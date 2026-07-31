@@ -1,6 +1,9 @@
+
 if (process.env.NODE_ENV != "production") {
   require("dotenv").config();
 }
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("DB URL:", process.env.ATLASDB_URL);
 
 const express = require("express");
 const app = express();
@@ -15,31 +18,34 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
+
 const User = require("./models/user.js");
 const Listing = require("./models/listing.js");
 const Review = require("./models/review.js");
 const listingsrouter = require("./routes/listing.js");
 const userrouter = require("./routes/user.js");
+const bookingrouter = require("./routes/booking.js");
+
 
 const port = 8080;
-const dbUrl = process.env.ATLASDB_URL; // ✅ from .env
-const secret = process.env.SECRET;     // ✅ from .env
+const dbUrl = process.env.ATLASDB_URL; //  from .env
+const secret = process.env.SECRET;     //  from .env
 
-// ================= VIEW ENGINE =================
+//  VIEW ENGINE 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.engine("ejs", ejsMate);
 
-// ================= MIDDLEWARE =================
+//  MIDDLEWARE 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
-// ================= MONGO SESSION STORE =================
+// MONGO SESSION STORE 
 const store = MongoStore.create({
-  mongoUrl: dbUrl,           // ✅ from .env
+  mongoUrl: dbUrl,           //  from .env
   crypto: {
-    secret: secret,          // ✅ from .env
+    secret: secret,          //  from .env
   },
   touchAfter: 24 * 3600,
 });
@@ -48,31 +54,31 @@ store.on("error", (err) => {
   console.log("Error in mongo session store:", err);
 });
 
-// ================= SESSION OPTIONS =================
+//SESSION OPTIONS 
 const sessionOptions = {
   store,
-  secret: secret,            // ✅ from .env
+  secret: secret,            //  from .env
   resave: false,
   saveUninitialized: true,
   cookie: {
-    expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // ✅ fixed: 36 -> 60
-    maxAge: 7 * 24 * 60 * 60 * 1000,                // ✅ fixed: 36 -> 60
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000, //  fixed: 36 -> 60
+    maxAge: 7 * 24 * 60 * 60 * 1000,                //  fixed: 36 -> 60
     httpOnly: true,
   },
 };
 
-// ================= SESSION + FLASH =================
+//  SESSION + FLASH 
 app.use(session(sessionOptions)); 
 app.use(flash());
 
-// ================= PASSPORT =================
+//PASSPORT 
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// ================= LOCALS =================
+// LOCALS 
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
@@ -80,24 +86,30 @@ app.use((req, res, next) => {
   next();
 });
 
-// ================= DB CONNECTION =================
+//  DB CONNECTION 
 main()
-  .then(() => console.log("✅ successfully connected to DB"))
+  .then(() => console.log(" successfully connected to DB"))
   .catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect(dbUrl); // ✅ from .env
+  await mongoose.connect(dbUrl); //  from .env
 }
 
-// ================= ROUTES =================
+
+mongoose.connection.once("open", () => {
+  console.log("Connected to DB:", mongoose.connection.name);
+});
+
+//  ROUTES 
 app.get("/", (req, res) => {
   res.redirect("/listings");
 });
 
 app.use("/listings", listingsrouter);
 app.use("/", userrouter);
+app.use("/", bookingrouter);
 
-// ================= REVIEW ROUTES =================
+// REVIEW ROUTES 
 app.post("/listings/:id/reviews", async (req, res, next) => {
   try {
     let listing = await Listing.findById(req.params.id);
@@ -136,14 +148,14 @@ app.delete("/listings/:id/reviews/:reviewId", async (req, res, next) => {
   }
 });
 
-// ================= ERROR HANDLER =================
+//  ERROR HANDLER 
 app.use((err, req, res, next) => {
-  console.error(err);
+  console.error(err); // you already have this — check your terminal output above this stack trace
   let { statusCode = 500, message = "Something went wrong!" } = err;
-  res.status(statusCode).render("error", { statusCode, message }); // ✅ render error page
+  res.status(statusCode).render("error", { statusCode, message });
 });
 
-// ================= SERVER =================
+//  SERVER 
 app.listen(port, () => {
-  console.log(`🚀 server running on port ${port}`);
+  console.log(` server running on port ${port}`);
 });
